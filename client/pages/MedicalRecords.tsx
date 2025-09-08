@@ -198,12 +198,6 @@ export default function MedicalRecordsPage() {
   return (
     <Fragment>
       <div className="p-4 md:p-8 max-w-[1600px] mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-800 mb-2">Medical Records</h1>
-          <p className="text-gray-600">View and manage patient medical records</p>
-        </div>
-
         {/* Search and Filters */}
         <div className="bg-white rounded-xl border border-gray-100 shadow-lg p-6 mb-6">
           <div className="relative">

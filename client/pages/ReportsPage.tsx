@@ -3,14 +3,14 @@ import { Calendar, Download, Filter } from 'lucide-react';
 import {
   BarChart,
   Bar,
+  LineChart,
+  Line,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   Legend,
-  PieChart,
-  Pie,
-  Cell,
+  ResponsiveContainer,
 } from 'recharts';
 import { cn } from '@/lib/utils';
 
@@ -26,8 +26,6 @@ interface MetricCard {
   trend: 'up' | 'down' | 'neutral';
 }
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
-
 // Dummy data for demonstration
 const appointmentData = [
   { month: 'Jan', completed: 65, canceled: 12 },
@@ -38,20 +36,13 @@ const appointmentData = [
   { month: 'Jun', completed: 55, canceled: 11 },
 ];
 
-const demographicsData = [
-  { name: '18-24', value: 15 },
-  { name: '25-34', value: 30 },
-  { name: '35-44', value: 25 },
-  { name: '45-54', value: 20 },
-  { name: '55+', value: 10 },
-];
-
-const diagnosesData = [
-  { name: 'Hypertension', value: 25 },
-  { name: 'Diabetes', value: 20 },
-  { name: 'Anxiety', value: 15 },
-  { name: 'Common Cold', value: 12 },
-  { name: 'Back Pain', value: 10 },
+const consultationData = [
+  { month: 'Jan', patients: 142, target: 150 },
+  { month: 'Feb', patients: 158, target: 150 },
+  { month: 'Mar', patients: 175, target: 150 },
+  { month: 'Apr', patients: 168, target: 150 },
+  { month: 'May', patients: 152, target: 150 },
+  { month: 'Jun', patients: 189, target: 150 },
 ];
 
 export default function ReportsPage() {
@@ -141,7 +132,7 @@ export default function ReportsPage() {
                     metric.trend === 'up' ? 'text-green-600' : 'text-red-600'
                   )}
                 >
-                  {metric.change}%
+                  {metric.change > 0 ? '+' : ''}{metric.change}%
                 </span>
                 <span className="text-sm text-gray-500">vs last month</span>
               </div>
@@ -154,63 +145,49 @@ export default function ReportsPage() {
           {/* Appointments Chart */}
           <div className="bg-white rounded-xl border border-gray-100 shadow-lg p-6">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Appointment Volume</h3>
-            <BarChart width={500} height={300} data={appointmentData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="completed" fill="#0088FE" name="Completed" />
-              <Bar dataKey="canceled" fill="#FF8042" name="Canceled" />
-            </BarChart>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={appointmentData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="completed" fill="#0088FE" name="Completed" />
+                <Bar dataKey="canceled" fill="#FF8042" name="Canceled" />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
 
-          {/* Demographics Chart */}
+          {/* Patient Consultations Chart */}
           <div className="bg-white rounded-xl border border-gray-100 shadow-lg p-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Patient Demographics</h3>
-            <PieChart width={500} height={300}>
-              <Pie
-                data={demographicsData}
-                cx={250}
-                cy={150}
-                innerRadius={60}
-                outerRadius={100}
-                fill="#8884d8"
-                paddingAngle={5}
-                dataKey="value"
-                label
-              >
-                {demographicsData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip />
-              <Legend />
-            </PieChart>
-          </div>
-
-          {/* Common Diagnoses Chart */}
-          <div className="bg-white rounded-xl border border-gray-100 shadow-lg p-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Common Diagnoses</h3>
-            <PieChart width={500} height={300}>
-              <Pie
-                data={diagnosesData}
-                cx={250}
-                cy={150}
-                innerRadius={60}
-                outerRadius={100}
-                fill="#8884d8"
-                paddingAngle={5}
-                dataKey="value"
-                label
-              >
-                {diagnosesData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip />
-              <Legend />
-            </PieChart>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Monthly Patient Consultations</h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={consultationData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line 
+                  type="monotone" 
+                  dataKey="patients" 
+                  stroke="#00C49F" 
+                  strokeWidth={3}
+                  name="Patients Consulted"
+                  dot={{ fill: '#00C49F', r: 6 }}
+                  activeDot={{ r: 8 }}
+                />
+                <Line 
+                  type="monotone" 
+                  dataKey="target" 
+                  stroke="#FF8042" 
+                  strokeWidth={2}
+                  strokeDasharray="5 5"
+                  name="Monthly Target"
+                  dot={{ fill: '#FF8042', r: 4 }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
           </div>
         </div>
       </div>

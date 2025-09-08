@@ -8,15 +8,15 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import Placeholder from "./pages/Placeholder";
 import { Layout } from "./components/Layout";
 
-// 1. Import your new PatientsPage component
-// (Assuming it's in the 'pages' folder and has a default export)
+// Import your page components
 import PatientsPage from "./pages/patientsPage";
 import Appointments from "./pages/Appointments";
 import MedicalRecords from "./pages/MedicalRecords";
 import ReportsPage from "./pages/ReportsPage";
+import ProfilePage from "./pages/ProfilePage";
+
 
 const queryClient = new QueryClient();
 
@@ -30,7 +30,7 @@ const App = () => (
           <Route
             path="/"
             element={
-              <Layout title="Dashboard" subtitle="Welcome back, Dr. Smith">
+              <Layout title="Dashboard" subtitle="Welcome back, Dr. Abas">
                 <Index />
               </Layout>
             }
@@ -38,7 +38,6 @@ const App = () => (
           <Route
             path="/patients"
             element={
-              // 2. Use your new component and wrap it in the Layout
               <Layout title="Patients" subtitle="Manage patient records">
                 <PatientsPage />
               </Layout>
@@ -47,27 +46,35 @@ const App = () => (
           <Route
             path="/appointments"
             element={
-            <Layout title="Appointments" subtitle="Manage Appointments">
-              <Appointments />
+              <Layout title="Appointments" subtitle="Clinic Schedule">
+                <Appointments />
               </Layout>
             }
           />
           <Route
             path="/records"
             element={
-            <Layout title="MedicalRecords" subtitle="Manage Medical Records" >
-              <MedicalRecords />
+              <Layout title="Medical Records" subtitle="Patients Medical Records">
+                <MedicalRecords />
               </Layout>
-              }
+            }
           />
           <Route
             path="/reports"
             element={
-            <Layout title="ReportsPage" subtitle="Manage Reports" >
-              <ReportsPage />
+              <Layout title="Reports" subtitle="Clinical Reports">
+                <ReportsPage />
               </Layout>
-            
-          }
+            }
+          />
+          {/* New Profile Route */}
+          <Route
+            path="/profile"
+            element={
+              <Layout title="Profile" subtitle="Manage your account settings">
+                <ProfilePage />
+              </Layout>
+            }
           />
           <Route path="*" element={<NotFound />} />
         </Routes>

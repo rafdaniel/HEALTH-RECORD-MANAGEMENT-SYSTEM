@@ -1,6 +1,8 @@
-import { Home, Users, Calendar, FileText, Pill, TrendingUp, X } from "lucide-react";
+// Sidebar.tsx
+import { Home, Users, Calendar, FileText, TrendingUp, X, User, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useState, useRef, useEffect } from "react";
 
 const navItems = [
   { name: "Dashboard", path: "/", icon: Home },
@@ -17,6 +19,31 @@ interface SidebarProps {
 
 export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
   const location = useLocation();
+  const navigate = useNavigate();
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setShowProfileMenu(false);
+      }
+    }
+
+    if (showProfileMenu) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showProfileMenu]);
+
+  const handleLogout = () => {
+    setShowProfileMenu(false);
+    onClose?.();
+    navigate('/logout');
+  };
 
   return (
     <>
@@ -80,18 +107,44 @@ export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
           </div>
         </nav>
 
-        <div className="p-6">
-          <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+        <div className="p-6 relative" ref={menuRef}>
+          <button
+            onClick={() => setShowProfileMenu(!showProfileMenu)}
+            className="w-full flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+          >
             <img
               src="https://api.builder.io/api/v1/image/assets/TEMP/6169e26510d5d756317627889fa53d0c5d220af7?width=80"
               alt="Dr. Smith"
               className="w-10 h-10 rounded-full"
             />
-            <div className="flex-1">
+            <div className="flex-1 text-left">
               <div className="text-sm font-medium text-gray-800">Dr. Smith</div>
               <div className="text-xs text-gray-500">Administrator</div>
             </div>
-          </div>
+          </button>
+
+          {showProfileMenu && (
+            <div className="absolute bottom-full left-6 right-6 mb-2 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden">
+              <Link
+                to="/profile"
+                onClick={() => {
+                  setShowProfileMenu(false);
+                  onClose?.();
+                }}
+                className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors text-gray-700"
+              >
+                <User className="w-4 h-4" />
+                <span className="text-sm font-medium">Edit Profile</span>
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors text-red-600"
+              >
+                <LogOut className="w-4 h-4" />
+                <span className="text-sm font-medium">Logout</span>
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </>
