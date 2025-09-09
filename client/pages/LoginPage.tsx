@@ -1,7 +1,6 @@
-// LoginPage.tsx
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, Eye, EyeOff, Heart } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, Heart, AlertCircle } from 'lucide-react'; // Import AlertCircle for error icon
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -11,13 +10,29 @@ export default function LoginPage() {
     password: '',
     remember: false,
   });
+  
+  // --- ADDED ---
+  // State to hold any login error messages
+  const [error, setError] = useState(''); 
+  // --- END ADDED ---
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Implement login logic here
-    console.log('Login attempt:', formData);
-    // Redirect to dashboard after successful login
-    navigate('/');
+    
+    // --- MODIFIED LOGIN LOGIC ---
+    // Check for your dummy data
+    if (formData.email === 'test@gmail.com' && formData.password === '12345' || formData.email === 'rbisnar_230000001886@uic.edu.ph' && formData.password === 'affy041905') {
+      // Success!
+      console.log('Login successful:', formData);
+      setError(''); // Clear any previous errors
+      // Redirect to dashboard after successful login
+      navigate('/dashboard'); 
+    } else {
+      // Failed login
+      console.log('Login failed: Invalid credentials');
+      setError('Invalid email or password. Please try again.');
+    }
+    // --- END MODIFIED LOGIC ---
   };
 
   return (
@@ -101,6 +116,16 @@ export default function LoginPage() {
               </Link>
             </div>
 
+            {/* --- ADDED ERROR MESSAGE --- */}
+            {error && (
+              <div className="flex items-center p-3 text-sm text-red-700 bg-red-100 rounded-lg">
+                <AlertCircle className="w-5 h-5 mr-2" />
+                <span>{error}</span>
+              </div>
+            )}
+            {/* --- END ADDED --- */}
+
+
             {/* Submit Button */}
             <button
               type="submit"
@@ -156,30 +181,3 @@ export default function LoginPage() {
     </div>
   );
 }
-
-// Add this CSS to your global.css for the blob animation
-/*
-@keyframes blob {
-  0%, 100% {
-    transform: translate(0, 0) scale(1);
-  }
-  33% {
-    transform: translate(30px, -50px) scale(1.1);
-  }
-  66% {
-    transform: translate(-20px, 20px) scale(0.9);
-  }
-}
-
-.animate-blob {
-  animation: blob 7s infinite;
-}
-
-.animation-delay-2000 {
-  animation-delay: 2s;
-}
-
-.animation-delay-4000 {
-  animation-delay: 4s;
-}
-*/

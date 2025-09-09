@@ -5,7 +5,7 @@ import { createRoot } from "react-dom/client";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import { Layout } from "./components/Layout";
@@ -16,6 +16,9 @@ import Appointments from "./pages/Appointments";
 import MedicalRecords from "./pages/MedicalRecords";
 import ReportsPage from "./pages/ReportsPage";
 import ProfilePage from "./pages/ProfilePage";
+import LoginPage from "./pages/LoginPage";
+import LogoutPage from "./pages/LogoutPage";
+import SignUpPage from "./pages/SignUpPage";
 
 
 const queryClient = new QueryClient();
@@ -27,8 +30,16 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
+          {/* Redirect root to login */}
+          <Route path="/" element={<Navigate to="/login" replace />} />
+          
+          {/* Login and Logout routes (without Layout) */}
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/logout" element={<LogoutPage />} />
+          
+          {/* Protected routes with Layout */}
           <Route
-            path="/"
+            path="/dashboard"
             element={
               <Layout title="Dashboard" subtitle="Welcome back, Dr. Abas">
                 <Index />
@@ -67,7 +78,6 @@ const App = () => (
               </Layout>
             }
           />
-          {/* New Profile Route */}
           <Route
             path="/profile"
             element={

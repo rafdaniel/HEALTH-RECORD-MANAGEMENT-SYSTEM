@@ -5,7 +5,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 
 const navItems = [
-  { name: "Dashboard", path: "/", icon: Home },
+  { name: "Dashboard", path: "/dashboard", icon: Home },
   { name: "Patients", path: "/patients", icon: Users },
   { name: "Appointments", path: "/appointments", icon: Calendar },
   { name: "Medical Records", path: "/records", icon: FileText },
