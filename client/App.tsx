@@ -11,6 +11,10 @@ import NotFound from "./pages/NotFound";
 import Placeholder from "./pages/Placeholder";
 import { Layout } from "./components/Layout";
 
+// 1. Import your new PatientsPage component
+// (Assuming it's in the 'pages' folder and has a default export)
+import PatientsPage from "./pages/patientsPage";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -30,7 +34,12 @@ const App = () => (
           />
           <Route
             path="/patients"
-            element={<Placeholder pageName="Patients" />}
+            element={
+              // 2. Use your new component and wrap it in the Layout
+              <Layout title="Patients" subtitle="Manage patient records">
+                <PatientsPage />
+              </Layout>
+            }
           />
           <Route
             path="/appointments"
