@@ -117,7 +117,7 @@ export default function Index() {
               <div className="flex gap-3">
                 <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
                 <div>
-                  <p className="text-sm text-gray-800">Lab results uploaded for John Doe</p>
+                  <p className="text-sm text-gray-800">Lab results uploaded for Sarah Johnson</p>
                   <p className="text-xs text-gray-500">2 minutes ago</p>
                 </div>
               </div>

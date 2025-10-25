@@ -7,7 +7,6 @@ const navItems = [
   { name: "Patients", path: "/patients", icon: Users },
   { name: "Appointments", path: "/appointments", icon: Calendar },
   { name: "Medical Records", path: "/records", icon: FileText },
-  { name: "Prescriptions", path: "/prescriptions", icon: Pill },
   { name: "Reports", path: "/reports", icon: TrendingUp },
 ];
 

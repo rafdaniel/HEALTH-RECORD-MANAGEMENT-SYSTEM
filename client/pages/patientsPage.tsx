@@ -30,7 +30,7 @@ const initialPatients: Patient[] = [
     dateOfBirth: "1992-03-15",
     bloodType: "A+",
     lastVisit: "2024-10-20",
-    avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
+    avatarUrl: "https://api.builder.io/api/v1/image/assets/TEMP/4797045a415e4685f6ece1f02c4fddc8a442d5d0?width=96",
     status: "Active"
   },
   {
@@ -44,7 +44,7 @@ const initialPatients: Patient[] = [
     dateOfBirth: "1979-07-22",
     bloodType: "O-",
     lastVisit: "2024-10-18",
-    avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Michael",
+    avatarUrl: "https://api.builder.io/api/v1/image/assets/TEMP/3f5171ffb70573f3f90d88d0f6a0f956a41610e7?width=96",
     status: "Active"
   },
   {
@@ -58,7 +58,7 @@ const initialPatients: Patient[] = [
     dateOfBirth: "1996-11-08",
     bloodType: "B+",
     lastVisit: "2024-10-15",
-    avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Emily",
+    avatarUrl: "https://api.builder.io/api/v1/image/assets/TEMP/d93d236cdc77a5f1f61b8438a7c582628122434f?width=96",
     status: "Active"
   },
   {
@@ -72,7 +72,7 @@ const initialPatients: Patient[] = [
     dateOfBirth: "1968-05-30",
     bloodType: "AB+",
     lastVisit: "2024-09-28",
-    avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=James",
+    avatarUrl: "https://randomuser.me/api/portraits/men/46.jpg",
     status: "Inactive"
   }
 ];
@@ -555,4 +555,3 @@ export default function PatientsPage() {
     </Fragment>
   );
 }
-// ...existing code...

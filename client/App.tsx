@@ -14,6 +14,9 @@ import { Layout } from "./components/Layout";
 // 1. Import your new PatientsPage component
 // (Assuming it's in the 'pages' folder and has a default export)
 import PatientsPage from "./pages/patientsPage";
+import Appointments from "./pages/Appointments";
+import MedicalRecords from "./pages/MedicalRecords";
+import ReportsPage from "./pages/ReportsPage";
 
 const queryClient = new QueryClient();
 
@@ -43,19 +46,28 @@ const App = () => (
           />
           <Route
             path="/appointments"
-            element={<Placeholder pageName="Appointments" />}
+            element={
+            <Layout title="Appointments" subtitle="Manage Appointments">
+              <Appointments />
+              </Layout>
+            }
           />
           <Route
             path="/records"
-            element={<Placeholder pageName="Medical Records" />}
-          />
-          <Route
-            path="/prescriptions"
-            element={<Placeholder pageName="Prescriptions" />}
+            element={
+            <Layout title="MedicalRecords" subtitle="Manage Medical Records" >
+              <MedicalRecords />
+              </Layout>
+              }
           />
           <Route
             path="/reports"
-            element={<Placeholder pageName="Reports" />}
+            element={
+            <Layout title="ReportsPage" subtitle="Manage Reports" >
+              <ReportsPage />
+              </Layout>
+            
+          }
           />
           <Route path="*" element={<NotFound />} />
         </Routes>
