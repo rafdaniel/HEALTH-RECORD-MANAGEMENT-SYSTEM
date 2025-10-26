@@ -21,7 +21,7 @@ export default function LoginPage() {
     
     // --- MODIFIED LOGIN LOGIC ---
     // Check for your dummy data
-    if (formData.email === 'test@gmail.com' && formData.password === '12345' || formData.email === 'rbisnar_230000001886@uic.edu.ph' && formData.password === 'affy041905') {
+    if (formData.email === 'test@gmail.com' && formData.password === '12345') {
       // Success!
       console.log('Login successful:', formData);
       setError(''); // Clear any previous errors
