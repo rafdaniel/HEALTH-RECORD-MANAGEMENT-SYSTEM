@@ -114,11 +114,11 @@ export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
           >
             <img
               src="https://api.builder.io/api/v1/image/assets/TEMP/6169e26510d5d756317627889fa53d0c5d220af7?width=80"
-              alt="Dr. Smith"
+              alt="Dr. Abas"
               className="w-10 h-10 rounded-full"
             />
             <div className="flex-1 text-left">
-              <div className="text-sm font-medium text-gray-800">Dr. Smith</div>
+              <div className="text-sm font-medium text-gray-800">Dr. Abas</div>
               <div className="text-xs text-gray-500">Administrator</div>
             </div>
           </button>

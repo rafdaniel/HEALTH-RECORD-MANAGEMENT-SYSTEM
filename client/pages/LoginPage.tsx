@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, Eye, EyeOff, Heart, AlertCircle } from 'lucide-react'; // Import AlertCircle for error icon
+import { Mail, Lock, Eye, EyeOff, Heart } from 'lucide-react';
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -10,29 +10,14 @@ export default function LoginPage() {
     password: '',
     remember: false,
   });
-  
-  // --- ADDED ---
-  // State to hold any login error messages
-  const [error, setError] = useState(''); 
-  // --- END ADDED ---
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // --- MODIFIED LOGIN LOGIC ---
-    // Check for your dummy data
-    if (formData.email === 'test@gmail.com' && formData.password === '12345') {
-      // Success!
-      console.log('Login successful:', formData);
-      setError(''); // Clear any previous errors
-      // Redirect to dashboard after successful login
-      navigate('/dashboard'); 
-    } else {
-      // Failed login
-      console.log('Login failed: Invalid credentials');
-      setError('Invalid email or password. Please try again.');
-    }
-    // --- END MODIFIED LOGIC ---
+    // Temporary: Direct navigation to dashboard without validation
+    // TODO: Add authentication logic when database is integrated
+    console.log('Login attempt:', formData);
+    navigate('/dashboard');
   };
 
   return (
@@ -115,16 +100,6 @@ export default function LoginPage() {
                 Forgot password?
               </Link>
             </div>
-
-            {/* --- ADDED ERROR MESSAGE --- */}
-            {error && (
-              <div className="flex items-center p-3 text-sm text-red-700 bg-red-100 rounded-lg">
-                <AlertCircle className="w-5 h-5 mr-2" />
-                <span>{error}</span>
-              </div>
-            )}
-            {/* --- END ADDED --- */}
-
 
             {/* Submit Button */}
             <button
