@@ -36,7 +36,8 @@ export default function LoginPage() {
             <Heart className="w-8 h-8 text-white fill-white" />
           </div>
           <h1 className="text-3xl font-bold text-gray-800 mb-2">Welcome Back</h1>
-          <p className="text-gray-600">Sign in to your HealthCare account</p>
+          <p className="text-gray-600">Sign in to your HealthCare account</p> 
+          <p className="text-gray-600">LOGIN USING EMAIL: test@gmail.com & PASSWORD: 123</p>
         </div>
 
         {/* Login Card */}
