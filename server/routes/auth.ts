@@ -45,7 +45,7 @@ router.post('/signup', async (req, res) => {
     
     // 3. Insert user
     const [result] = await db.query<ResultSetHeader>(
-      `INSERT INTO users (full_name, email, phone, password_hash, 
+      `INSERT INTO users (full_name, email, phone, password, 
          specialty, license_number, years_of_experience) 
        VALUES (?, ?, ?, ?, ?, ?, ?)`,
       [fullName, email, phone, hashedPassword, specialty, 

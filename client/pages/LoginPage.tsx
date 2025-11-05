@@ -1,38 +1,59 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, Eye, EyeOff, Heart, AlertCircle } from 'lucide-react'; // Import AlertCircle for error icon
+import { Mail, Lock, Eye, EyeOff, Heart, AlertCircle } from 'lucide-react';
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     remember: false,
   });
-  
-  // --- ADDED ---
-  // State to hold any login error messages
-  const [error, setError] = useState(''); 
-  // --- END ADDED ---
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // --- MODIFIED LOGIN LOGIC ---
-    // Check for your dummy data
-    if (formData.email === 'test@gmail.com' && formData.password === '12345') {
-      // Success!
-      console.log('Login successful:', formData);
-      setError(''); // Clear any previous errors
-      // Redirect to dashboard after successful login
-      navigate('/dashboard'); 
-    } else {
-      // Failed login
-      console.log('Login failed: Invalid credentials');
-      setError('Invalid email or password. Please try again.');
+    setError('');
+    setIsLoading(true);
+
+    try {
+      // Call your backend API
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        // Store the token (if you want to persist login state)
+        if (data.token) {
+          sessionStorage.setItem('authToken', data.token);
+          sessionStorage.setItem('user', JSON.stringify(data.user));
+        }
+
+        console.log('Login successful:', data);
+        
+        // Redirect to dashboard
+        navigate('/dashboard');
+      } else {
+        // Show error message from server
+        setError(data.message || 'Invalid email or password. Please try again.');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      setError('Unable to connect to server. Please try again later.');
+    } finally {
+      setIsLoading(false);
     }
-    // --- END MODIFIED LOGIC ---
   };
 
   return (
@@ -71,6 +92,7 @@ export default function LoginPage() {
                   className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                   placeholder="doctor@healthcare.com"
                   required
+                  disabled={isLoading}
                 />
               </div>
             </div>
@@ -89,11 +111,13 @@ export default function LoginPage() {
                   className="w-full pl-10 pr-12 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                   placeholder="••••••••"
                   required
+                  disabled={isLoading}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  disabled={isLoading}
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
@@ -108,6 +132,7 @@ export default function LoginPage() {
                   checked={formData.remember}
                   onChange={(e) => setFormData({ ...formData, remember: e.target.checked })}
                   className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                  disabled={isLoading}
                 />
                 <span className="ml-2 text-sm text-gray-600">Remember me</span>
               </label>
@@ -116,22 +141,31 @@ export default function LoginPage() {
               </Link>
             </div>
 
-            {/* --- ADDED ERROR MESSAGE --- */}
+            {/* Error Message */}
             {error && (
               <div className="flex items-center p-3 text-sm text-red-700 bg-red-100 rounded-lg">
-                <AlertCircle className="w-5 h-5 mr-2" />
+                <AlertCircle className="w-5 h-5 mr-2 flex-shrink-0" />
                 <span>{error}</span>
               </div>
             )}
-            {/* --- END ADDED --- */}
-
 
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transform hover:scale-[1.02] transition-all font-medium shadow-lg hover:shadow-xl"
+              disabled={isLoading}
+              className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transform hover:scale-[1.02] transition-all font-medium shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             >
-              Sign In
+              {isLoading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Signing In...
+                </span>
+              ) : (
+                'Sign In'
+              )}
             </button>
           </form>
 
@@ -147,7 +181,7 @@ export default function LoginPage() {
 
           {/* Social Login */}
           <div className="grid grid-cols-2 gap-3">
-            <button className="flex items-center justify-center gap-2 py-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-all">
+            <button className="flex items-center justify-center gap-2 py-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-all" disabled={isLoading}>
               <svg className="w-5 h-5" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                 <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -156,7 +190,7 @@ export default function LoginPage() {
               </svg>
               <span className="text-sm font-medium text-gray-700">Google</span>
             </button>
-            <button className="flex items-center justify-center gap-2 py-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-all">
+            <button className="flex items-center justify-center gap-2 py-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-all" disabled={isLoading}>
               <svg className="w-5 h-5" fill="#1877F2" viewBox="0 0 24 24">
                 <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
               </svg>
