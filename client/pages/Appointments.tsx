@@ -1,6 +1,11 @@
 import { Fragment, useState, useEffect } from 'react';
-import { Calendar, Search, Plus } from 'lucide-react';
+import { Calendar, Search, Plus, X } from 'lucide-react';
 import { cn } from "@/lib/utils";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface Appointment {
   id: number;
@@ -49,6 +54,36 @@ const initialAppointments: Appointment[] = [
 export default function AppointmentsPage() {
   const [appointments, setAppointments] = useState<Appointment[]>(initialAppointments);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [newAppointment, setNewAppointment] = useState({
+    patientName: "",
+    date: "",
+    time: "",
+    visitType: "Clinic" as "Home" | "Clinic",
+    status: "Scheduled" as "Scheduled" | "Completed" | "Cancelled"
+  });
+
+  const handleAddAppointment = () => {
+    if (!newAppointment.patientName || !newAppointment.date || !newAppointment.time) {
+      alert("Please fill in all required fields");
+      return;
+    }
+
+    const appointment: Appointment = {
+      id: appointments.length + 1,
+      ...newAppointment
+    };
+
+    setAppointments([...appointments, appointment]);
+    setIsDialogOpen(false);
+    setNewAppointment({
+      patientName: "",
+      date: "",
+      time: "",
+      visitType: "Clinic",
+      status: "Scheduled"
+    });
+  };
 
   const filteredAppointments = appointments.filter(appointment =>
     appointment.patientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -119,10 +154,87 @@ export default function AppointmentsPage() {
                     className="w-full sm:w-64 h-10 pl-10 pr-4 border border-gray-200 rounded-lg text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
-                <button className="h-10 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 font-medium">
-                  <Plus className="w-4 h-4" />
-                  New Appointment
-                </button>
+                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                  <DialogTrigger asChild>
+                    <button className="h-10 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 font-medium">
+                      <Plus className="w-4 h-4" />
+                      New Appointment
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[500px]">
+                    <DialogHeader>
+                      <DialogTitle>Schedule New Appointment</DialogTitle>
+                    </DialogHeader>
+                    <div className="grid gap-4 py-4">
+                      <div className="grid gap-2">
+                        <Label htmlFor="patientName">Patient Name *</Label>
+                        <Input
+                          id="patientName"
+                          placeholder="Enter patient name"
+                          value={newAppointment.patientName}
+                          onChange={(e) => setNewAppointment({ ...newAppointment, patientName: e.target.value })}
+                        />
+                      </div>
+                      <div className="grid gap-2">
+                        <Label htmlFor="date">Date *</Label>
+                        <Input
+                          id="date"
+                          type="date"
+                          value={newAppointment.date}
+                          onChange={(e) => setNewAppointment({ ...newAppointment, date: e.target.value })}
+                        />
+                      </div>
+                      <div className="grid gap-2">
+                        <Label htmlFor="time">Time *</Label>
+                        <Input
+                          id="time"
+                          type="time"
+                          value={newAppointment.time}
+                          onChange={(e) => setNewAppointment({ ...newAppointment, time: e.target.value })}
+                        />
+                      </div>
+                      <div className="grid gap-2">
+                        <Label htmlFor="visitType">Visit Type</Label>
+                        <Select
+                          value={newAppointment.visitType}
+                          onValueChange={(value: "Home" | "Clinic") => setNewAppointment({ ...newAppointment, visitType: value })}
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="Clinic">Clinic</SelectItem>
+                            <SelectItem value="Home">Home</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="grid gap-2">
+                        <Label htmlFor="status">Status</Label>
+                        <Select
+                          value={newAppointment.status}
+                          onValueChange={(value: "Scheduled" | "Completed" | "Cancelled") => setNewAppointment({ ...newAppointment, status: value })}
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="Scheduled">Scheduled</SelectItem>
+                            <SelectItem value="Completed">Completed</SelectItem>
+                            <SelectItem value="Cancelled">Cancelled</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    <div className="flex justify-end gap-3">
+                      <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+                        Cancel
+                      </Button>
+                      <Button onClick={handleAddAppointment}>
+                        Create Appointment
+                      </Button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
               </div>
             </div>
           </div>

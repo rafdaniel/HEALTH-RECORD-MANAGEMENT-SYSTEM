@@ -1,9 +1,11 @@
 import { Users, Calendar, FilePlus, DollarSign, Plus, CalendarPlus, Pill } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { StatCard } from "@/components/StatCard";
 import { AppointmentCard } from "@/components/AppointmentCard";
 import { Button } from "@/components/ui/button";
 
 export default function Index() {
+  const navigate = useNavigate();
   return (
     <div className="p-4 md:p-8 bg-gray-50 min-h-screen">
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
@@ -93,17 +95,28 @@ export default function Index() {
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Quick Actions</h3>
             
             <div className="space-y-3">
-              <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white h-12 text-base">
+              <Button 
+                onClick={() => navigate('/patients')}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white h-12 text-base"
+              >
                 <Plus className="w-4 h-4" />
                 New Patient
               </Button>
 
-              <Button variant="outline" className="w-full h-[50px] text-base text-gray-700 border-gray-200">
+              <Button 
+                onClick={() => navigate('/appointments')}
+                variant="outline" 
+                className="w-full h-[50px] text-base text-gray-700 border-gray-200"
+              >
                 <CalendarPlus className="w-4 h-4" />
                 Schedule Appointment
               </Button>
 
-              <Button variant="outline" className="w-full h-[50px] text-base text-gray-700 border-gray-200">
+              <Button 
+                onClick={() => navigate('/medical-records')}
+                variant="outline" 
+                className="w-full h-[50px] text-base text-gray-700 border-gray-200"
+              >
                 <Pill className="w-4 h-4" />
                 New Prescription
               </Button>

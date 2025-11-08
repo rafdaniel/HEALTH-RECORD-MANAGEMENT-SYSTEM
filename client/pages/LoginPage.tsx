@@ -1,10 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-<<<<<<< HEAD
 import { Mail, Lock, Eye, EyeOff, Heart, AlertCircle } from 'lucide-react';
-=======
-import { Mail, Lock, Eye, EyeOff, Heart } from 'lucide-react';
->>>>>>> e82ba442390d3492649e43844635fcb4726ddd71
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -15,14 +11,10 @@ export default function LoginPage() {
     password: '',
     remember: false,
   });
-<<<<<<< HEAD
   const [error, setError] = useState('');
-=======
->>>>>>> e82ba442390d3492649e43844635fcb4726ddd71
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-<<<<<<< HEAD
     setError('');
     setIsLoading(true);
 
@@ -62,13 +54,6 @@ export default function LoginPage() {
     } finally {
       setIsLoading(false);
     }
-=======
-    
-    // Temporary: Direct navigation to dashboard without validation
-    // TODO: Add authentication logic when database is integrated
-    console.log('Login attempt:', formData);
-    navigate('/dashboard');
->>>>>>> e82ba442390d3492649e43844635fcb4726ddd71
   };
 
   return (
@@ -87,8 +72,7 @@ export default function LoginPage() {
             <Heart className="w-8 h-8 text-white fill-white" />
           </div>
           <h1 className="text-3xl font-bold text-gray-800 mb-2">Welcome Back</h1>
-          <p className="text-gray-600">Sign in to your HealthCare account</p> 
-          <p className="text-gray-600">LOGIN USING EMAIL: test@gmail.com & PASSWORD: 123</p>
+          <p className="text-gray-600">Sign in to your HealthCare account</p>
         </div>
 
         {/* Login Card */}
@@ -157,7 +141,6 @@ export default function LoginPage() {
               </Link>
             </div>
 
-<<<<<<< HEAD
             {/* Error Message */}
             {error && (
               <div className="flex items-center p-3 text-sm text-red-700 bg-red-100 rounded-lg">
@@ -166,8 +149,6 @@ export default function LoginPage() {
               </div>
             )}
 
-=======
->>>>>>> e82ba442390d3492649e43844635fcb4726ddd71
             {/* Submit Button */}
             <button
               type="submit"
